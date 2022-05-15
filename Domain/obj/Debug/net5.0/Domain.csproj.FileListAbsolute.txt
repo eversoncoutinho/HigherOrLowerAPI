@@ -1,0 +1,12 @@
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\bin\Debug\net5.0\Domain.deps.json
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\bin\Debug\net5.0\Domain.dll
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\bin\Debug\net5.0\Domain.pdb
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\obj\Debug\net5.0\Domain.csproj.AssemblyReference.cache
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\obj\Debug\net5.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\obj\Debug\net5.0\Domain.AssemblyInfoInputs.cache
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\obj\Debug\net5.0\Domain.AssemblyInfo.cs
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\obj\Debug\net5.0\Domain.csproj.CoreCompileInputs.cache
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\obj\Debug\net5.0\Domain.dll
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\obj\Debug\net5.0\refint\Domain.dll
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\obj\Debug\net5.0\Domain.pdb
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\Domain\obj\Debug\net5.0\ref\Domain.dll
