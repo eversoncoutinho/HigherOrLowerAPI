@@ -18,16 +18,21 @@ namespace Infra.Repositories
 
         public async Task<Deck> CreateDeckAsync( )
         {
-            var cards = await _context.Cards.ToListAsync();
-            var deck = new Deck(cards)
-            {
-                Cards = cards
-            };
+            var deck = new Deck();
+            var cartas = deck.CreateDeck();
+            await _context.AddAsync(deck.Cards=cartas);
+            return deck;
+        }
+        public Deck CreateDeck( )
+        {
+            var deck = new Deck();
+            var cartas = deck.CreateDeck();
+            deck.Cards = cartas;
+            _context.Add(deck);
             return deck;
         }
 
-
-        public async Task<List<Card>> GetCardsAsync( ) => await _context.Cards.ToListAsync();
+        public async Task<Deck> GetDeckAsync(int id) => await _context.Decks.Include(c=>c.Cards).FirstOrDefaultAsync(n=>n.Id==id);
         
     }
 }

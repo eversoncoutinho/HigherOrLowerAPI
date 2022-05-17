@@ -1,6 +1,8 @@
-﻿using Domain.Enum;
+﻿using Domain.Entities;
+using Domain.Enum;
 
-namespace Domain.Entities
+
+namespace Domain.Domain
 {
     public class Card:Entity
     {
@@ -8,11 +10,13 @@ namespace Domain.Entities
 
         public Card(string value, Nipe nipe)
         {
+            
             Value = value;
             Nipe = nipe;
         }
-
         public string Value { get; set; }
         public Nipe Nipe { get; set; }
+
+        
     }
 }

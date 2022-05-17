@@ -1,7 +1,11 @@
+using Application.Interfaces;
 using Application.Mappings;
+using Application.Services;
 using AutoMapper;
+using Domain.Interfaces;
 using Infra;
 using Infra.Data;
+using Infra.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +36,12 @@ namespace HigherOrLowerAPI
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //services
+            services.AddScoped<IDeckService, DeckService>();
+            services.AddScoped<IGameServices, GameService>();
+
+
             var mySqlStringConection = MyConectionString.connectionString;
             services.AddDbContext<HigherOrLowerDbContext>(options =>
             options.UseSqlServer(mySqlStringConection)        

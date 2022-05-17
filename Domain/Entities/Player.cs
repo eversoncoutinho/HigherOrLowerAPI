@@ -8,6 +8,14 @@ namespace Domain.Entities
 {
     public class Player:Entity
     {
+        public Player(){}
 
+        public Player(string name, int score=0)
+        {
+            Score = score;
+            Name = name;
+        }
+        public int Score { get; set; }
+        public string Name { get; set; }
     }
 }

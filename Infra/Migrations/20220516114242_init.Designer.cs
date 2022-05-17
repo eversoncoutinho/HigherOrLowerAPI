@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(HigherOrLowerDbContext))]
-    [Migration("20220514152450_CardsList3")]
-    partial class CardsList3
+    [Migration("20220516114242_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,23 +21,39 @@ namespace Infra.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Domain.Entities.Card", b =>
+            modelBuilder.Entity("Domain.Domain.Card", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("DeckId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Nipe")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DeckId");
+
                     b.ToTable("Cards");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Deck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Decks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -250,6 +266,13 @@ namespace Infra.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Domain.Domain.Card", b =>
+                {
+                    b.HasOne("Domain.Entities.Deck", null)
+                        .WithMany("Cards")
+                        .HasForeignKey("DeckId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -299,6 +322,11 @@ namespace Infra.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Deck", b =>
+                {
+                    b.Navigation("Cards");
                 });
 #pragma warning restore 612, 618
         }

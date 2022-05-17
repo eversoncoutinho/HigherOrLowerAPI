@@ -1,5 +1,9 @@
-﻿using Application.Services;
+﻿using Application.Mappings;
+using Application.Services;
+using AutoMapper;
+using Domain.Domain;
 using Domain.Entities;
+using Domain.Enum;
 using Domain.Interfaces;
 using Infra;
 using Infra.Data;
@@ -13,6 +17,7 @@ namespace HigherOrLowerTests
     public class DeckTestService
     {
         private IUnitOfWork repository;
+        private IMapper mapper;
 
         public static DbContextOptions<HigherOrLowerDbContext> dbContextOptions { get; }
 
@@ -23,10 +28,14 @@ namespace HigherOrLowerTests
             .Options;
         }
 
-        //dências injetadas lá no controller
-
         public DeckTestService( )
         {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new MappingProfile());
+            });
+            mapper = config.CreateMapper();
+
             var context = new HigherOrLowerDbContext(dbContextOptions);
             repository = new UnitOfWork(context);
         }
@@ -36,28 +45,61 @@ namespace HigherOrLowerTests
         {
 
             //Arrange            
-            var service = new DeckService(repository);
+            var service = new DeckService(repository, mapper);
 
             //Act
-            var data = service.GetCardsAsync().Result;
-
-            //Assert
-            Assert.IsType<List<Card>>(data);
-            
-        }
-    
-        [Fact]
-        public void CreateDeckService_Return_OkResult( )
-        {
-            //Arrange            
-            var service = new DeckService(repository);
-
-            //Act
-            var data = service.CreateDeckAsync().Result;
+            var data = service.GetDeckAsync(2).Result;
 
             //Assert
             Assert.IsType<Deck>(data);
 
         }
+
+        [Fact]
+        public void CreateDeckService_Return_OkResult( )
+        {
+            //Arrange            
+            var service = new DeckService(repository, mapper);
+
+            //Act
+            var data = service.CreateDeck();
+
+            //Assert
+            Assert.IsType<Deck>(data);
+            Assert.NotEqual(0,data.Id);
+        }
+        [Fact]
+        public void ChooseCardFromDeck_Return_OkResult( )
+        {
+        //Arrange            
+        var service = new DeckService(repository, mapper);
+
+        //Act
+        var data = service.ChooseCard(1);
+
+
+        //Assert
+         Assert.IsType<Card>(data);
+            Assert.IsNotType<int>(data.Value);
+        }
+        [Fact]
+        public void DeleteCardFromDeck_Return_OkResult( )
+        {
+            //Arrange
+            var service = new DeckService(repository, mapper);
+            var deck=new Deck();
+            var card = new Card("2",(Nipe)1);
+            var deckId = 3;
+            var data = service.GetDeckAsync(deckId).Result;
+
+            //Act
+            var result = service.DeleteCard(deckId, card).Result;
+
+            //Assert
+            Assert.IsType<Deck>(result);
+            Assert.Equal(49,result.Cards.Count);
+
+        }
+
     }
 }

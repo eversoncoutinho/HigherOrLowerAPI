@@ -6,7 +6,8 @@ namespace Domain.Interfaces
 {
     public interface IDeckRepository:IRepository<Deck>
     {
-        Task<List<Card>> GetCardsAsync( );
+        Task<Deck> GetDeckAsync(int id);
         Task<Deck> CreateDeckAsync( );
+        Deck CreateDeck( );
     }
 }
