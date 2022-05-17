@@ -23,9 +23,9 @@ namespace Infra.Repositories
 
         public async Task<Challenge> GetChallengeAsync(int id)
         {
-            return await _context.Challenges
+            return await _context.Challenges.Include(d=>d.Deck)
                 .Include(g => g.Games)
-                .Include(d=>d.Deck)
+                
                 .Include(p=>p.Players)
                 .FirstOrDefaultAsync(n => n.Id == id);
         }

@@ -19,15 +19,6 @@ namespace HigherOrLowerAPI.Controllers
             _uof = uof;
         }
 
-        //[HttpPost]
-        //public async Task<Deck> StartChallenge( )
-        //{
-        //    var deck = await _uof.DeckRepository.CreateDeckAsync();
-        //    return CreatedAtAction("GetGrain", //precisa ter o mesmo nome da action 
-        //                            new { id = deck.Id }, deck);
-        //    ;
-        //}
-
         // GET: api/Deck
         [HttpGet]
         public async Task<Deck> GetDeck( )
@@ -37,9 +28,9 @@ namespace HigherOrLowerAPI.Controllers
 
         // GET api/Deck/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<Deck> Get(int id)
         {
-            return "value";
+            return await _uof.DeckRepository.GetDeckAsync(id);
         }
 
         // POST api/<ValuesController>

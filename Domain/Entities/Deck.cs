@@ -15,6 +15,7 @@ namespace Domain.Entities
             Cards = cards;
         }
         public List<Card> Cards { get; set; }
+
         public List<Card> CreateDeck( )
         {
 
