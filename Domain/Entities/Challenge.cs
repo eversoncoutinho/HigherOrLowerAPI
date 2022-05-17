@@ -2,15 +2,17 @@
 
 namespace Domain.Entities
 {
-    public class Challenge
+    public class Challenge:Entity
     {
-        public Challenge(IList<string> players, IList<Game> games)
+        public Challenge(){}
+        public Challenge(List<Player> players, List<Game> games, Deck deck)
         {
             Players = players;
             Games = games;
+            Deck = deck;
         }
-        
-        public IList<string> Players { get; set; }
-        public IList<Game> Games { get; set; }
+        public Deck Deck { get; set; }
+        public List<Player> Players { get; set; }
+        public List<Game> Games { get; set; }
     }
 }

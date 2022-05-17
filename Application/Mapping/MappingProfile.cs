@@ -9,6 +9,7 @@ namespace Application.Mappings
         public MappingProfile( )
         {
             CreateMap<DeckDTO, Deck>().ReverseMap();
+            CreateMap<ChallengeDTO, Challenge>().ReverseMap();
 
 
 

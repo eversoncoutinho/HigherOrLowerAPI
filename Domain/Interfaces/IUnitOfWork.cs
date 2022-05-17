@@ -4,8 +4,9 @@ namespace Domain.Interfaces
 {
     public interface IUnitOfWork
     {
-        ICardRepository CardRepository { get; }
-        IDeckRepository DeckRepository { get; }
+        IChallengeRepository ChallengeRepository { get; }
+         IDeckRepository DeckRepository { get; }
+        IGameRepository GameRepository { get; }
         void Commit();
         Task CommitAsync( );
     }

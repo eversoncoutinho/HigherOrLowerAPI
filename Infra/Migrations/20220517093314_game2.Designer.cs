@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(HigherOrLowerDbContext))]
-    [Migration("20220514152122_CardsList2")]
-    partial class CardsList2
+    [Migration("20220517093314_game2")]
+    partial class game2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,23 +21,107 @@ namespace Infra.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Domain.Entities.Card", b =>
+            modelBuilder.Entity("Domain.Domain.Card", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("DeckId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Nipe")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DeckId");
+
                     b.ToTable("Cards");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Challenge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Challenges");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Deck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Decks");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Game", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CardInTableId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ChallengeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DeckId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Guess")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Result")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardInTableId");
+
+                    b.HasIndex("ChallengeId");
+
+                    b.HasIndex("DeckId");
+
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Player", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ChallengeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChallengeId");
+
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -250,6 +334,39 @@ namespace Infra.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Domain.Domain.Card", b =>
+                {
+                    b.HasOne("Domain.Entities.Deck", null)
+                        .WithMany("Cards")
+                        .HasForeignKey("DeckId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Game", b =>
+                {
+                    b.HasOne("Domain.Domain.Card", "CardInTable")
+                        .WithMany()
+                        .HasForeignKey("CardInTableId");
+
+                    b.HasOne("Domain.Entities.Challenge", null)
+                        .WithMany("Games")
+                        .HasForeignKey("ChallengeId");
+
+                    b.HasOne("Domain.Entities.Deck", "Deck")
+                        .WithMany()
+                        .HasForeignKey("DeckId");
+
+                    b.Navigation("CardInTable");
+
+                    b.Navigation("Deck");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Player", b =>
+                {
+                    b.HasOne("Domain.Entities.Challenge", null)
+                        .WithMany("Players")
+                        .HasForeignKey("ChallengeId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -299,6 +416,18 @@ namespace Infra.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Challenge", b =>
+                {
+                    b.Navigation("Games");
+
+                    b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Deck", b =>
+                {
+                    b.Navigation("Cards");
                 });
 #pragma warning restore 612, 618
         }

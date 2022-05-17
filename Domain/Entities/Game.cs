@@ -1,21 +1,26 @@
-﻿using Domain.Enum;
+﻿using Domain.Domain;
+using Domain.Enum;
 using System.Collections.Generic;
 
 namespace Domain.Entities
 {
     public class Game:Entity
     {
-        public Game(Card cardOpen, List<Card> deck, Guess guesses)
+        public Game()
         {
-            CardOpen = cardOpen;
+            
+        }
+        public Game(Deck deck, Card cardOnTable, Guess guesses = 0, int score = 0)
+        {
             Deck = deck;
             Guess = guesses;
+            CardOnTable = cardOnTable;            
         }
-
-        public Card CardOpen { get; set; }
+        public Card CardOnTable { get; set; }
         public Guess Guess { get; set; }
-        public List<Card> Deck { get; set; }
-
+        public Deck Deck { get; set; }
+        public bool Result { get; set; }
+        
         //pegar o deck
         //apresentar carta
         //comparar as cartas

@@ -13,16 +13,10 @@ namespace Infra.Repositories
             _context = contexto;
         }
 
-        private CardRepository _cardRepository;
+        
         private DeckRepository _deckRepository;
-
-        public ICardRepository CardRepository 
-        {
-            get
-            {
-              return _cardRepository = _cardRepository ?? new CardRepository(_context);
-            }
-        }
+        private GameRepository _gameRepository;
+        private ChallengeRepository _challengeRepository;
 
         public IDeckRepository DeckRepository
         {
@@ -31,6 +25,22 @@ namespace Infra.Repositories
                 return _deckRepository = _deckRepository ?? new DeckRepository(_context);
             }
         }
+        public IGameRepository GameRepository
+        {
+            get
+            {
+                return _gameRepository = _gameRepository ?? new GameRepository(_context);
+            }
+        }
+
+        public IChallengeRepository ChallengeRepository
+        {
+            get
+            {
+                return _challengeRepository = _challengeRepository ?? new ChallengeRepository(_context);
+            }
+        }
+
 
         public void Commit() => _context.SaveChanges();
         public async Task CommitAsync() => await _context.SaveChangesAsync();
