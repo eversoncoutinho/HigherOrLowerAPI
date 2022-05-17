@@ -23,8 +23,7 @@ namespace Application.Services
         public Deck CreateDeck( ) {
             
             var deck = _uof.DeckRepository.CreateDeck();
-            _uof.Commit();
-            //var deckDTO = _mapper.Map<Deck>(deck);
+            //_uof.Commit();
             return deck;
         }
 

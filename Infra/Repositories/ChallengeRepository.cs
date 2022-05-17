@@ -25,6 +25,7 @@ namespace Infra.Repositories
         {
             return await _context.Challenges
                 .Include(g => g.Games)
+                .Include(d=>d.Deck)
                 .Include(p=>p.Players)
                 .FirstOrDefaultAsync(n => n.Id == id);
         }
