@@ -16,11 +16,12 @@ namespace HigherOrLowerAPI.Controllers
     {
         private readonly IUnitOfWork _uof;
         private readonly IDeckService _iDeckServices;
-        public ChallengeController(IUnitOfWork uof, IDeckService iDeckServices)
+        private readonly IGameServices _gameServices;
+        public ChallengeController(IUnitOfWork uof, IDeckService iDeckServices,IGameServices gameServices)
         {
             _uof = uof;
             _iDeckServices = iDeckServices;
-
+            _gameServices = gameServices;
         }
 
         [HttpGet("Start")]
@@ -31,10 +32,11 @@ namespace HigherOrLowerAPI.Controllers
             {
                 var deck = _iDeckServices.CreateDeck();
                 var cardOnTable = _iDeckServices.ChooseCard(deck);
-                deck = _iDeckServices.RemoveCardDeck(deck,cardOnTable);
+                //deck = _iDeckServices.RemoveCardDeck(deck,cardOnTable);
 
                 var players = new List<Player>();
 
+                //TO DO - Create Player
                 players.Add(new Player { Name = "Everson", Score = 1 });
                 players.Add(new Player { Name = "Maria", Score = 1 });
                 players.Add(new Player { Name = "Pedro", Score = 1 });
@@ -66,7 +68,47 @@ namespace HigherOrLowerAPI.Controllers
             };
 
         }
+        [HttpPost("YourTurn")]
+        
+        public ActionResult<Challenge> yourTurn([FromBody] ChooseDTO chooseDTO)
+        {
+            //Open the current Challege
+            var lastTurn = _uof.ChallengeRepository.GetChallenge(chooseDTO.ChallengeId);
+            
+            //Receber escolha do jogador (maior ou menor)
 
+            var playerChoose = chooseDTO.Guess;
+
+            //Deck
+            //Escolher carta do deck
+            var GetcardOnDeck = _iDeckServices.ChooseCard(lastTurn.Deck);
+            var newDeck = _iDeckServices.RemoveCardDeck(lastTurn.Deck,GetcardOnDeck);
+            _uof.DeckRepository.Update(newDeck);
+
+            var cardOnTable = lastTurn.Games[lastTurn.Games.Count-1].CardOnTable;
+
+            var compairCard = _gameServices.CompairCards(cardOnTable, GetcardOnDeck);
+            var result = _gameServices.CompairChoose(compairCard, playerChoose);
+            //Comparar com a carta da mesa
+            //analisar se está certo ou errado
+            //se acerto acrescentar 1 ao escore do jogador  
+            //retirar a carta escolhida
+            //update deck
+            var game = new Game()
+            {
+                CardOnTable = GetcardOnDeck,
+                Deck = newDeck,
+                Guess = playerChoose,
+                Result = false,
+
+            };
+           lastTurn.Games.Add(game);
+           //var newTurn = new Challenge(chooseDTO.Player, lastTurn, newDeck);
+            //_uof.ChallengeRepository.Update(newTurn);
+            //_uof.Commit();
+
+            return lastTurn;
+        }
 
         [HttpGet("{id}")]
         public ActionResult<Challenge> Table(int id)
@@ -77,16 +119,5 @@ namespace HigherOrLowerAPI.Controllers
         }
 
 
-
-        //[HttpGet("{id}")]
-        
-        //public IActionResult Post([FromBody] ChooseDTO chooseDto)
-        // {
-
-        //     var challege = _uof.ChallengeRepository.GetChallengeAsync(chooseDto.ChallengeId);
-        //     var ChooseCard = _iDeckServices.ChooseCard(challege.Result.Deck);
-        //     //var cardOnTable = 
-
-        // }
     } 
 }

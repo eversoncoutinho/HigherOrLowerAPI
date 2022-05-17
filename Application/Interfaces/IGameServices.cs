@@ -1,19 +1,15 @@
 ﻿using Domain.Domain;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Enum;
 
 namespace Application.Interfaces
 {
     public interface IGameServices
     {
         string CompairCards(Card cardInTable, Card cardInDeck);
-        bool CompairChoose(string compairCards, string palyerChoose);
+        bool CompairChoose(string compairCards, Guess palyerChoose);
 
-        int AddPoint(int platerId, bool resultCompair);
+        int AddPoint(Player player, bool resultCompair);
         //pegar o deck
         //apresentar carta
         //comparar as cartas
