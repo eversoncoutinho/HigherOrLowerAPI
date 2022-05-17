@@ -32,7 +32,7 @@ namespace Infra.Repositories
             return deck;
         }
 
-        public async Task<Deck> GetDeckAsync(int id) => await _context.Decks.Include(c=>c.Cards).FirstOrDefaultAsync(n=>n.Id==id);
+        public async Task<Deck> GetDeckAsync(int id) => await _context.Decks.Include(c=>c.Cards).SingleOrDefaultAsync(n=>n.Id==id);
         
     }
 }

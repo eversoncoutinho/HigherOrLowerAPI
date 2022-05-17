@@ -2,7 +2,9 @@
 using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 
@@ -25,54 +27,51 @@ namespace HigherOrLowerAPI.Controllers
        
         public ActionResult<TableDTO> StartChallenge(string NumberPlayer)
         {
-            
-            var deck = _iDeckServices.CreateDeck();
-            var cardOnTable = _iDeckServices.ChooseCard(deck);           
-            
-            var players = new List<Player>();
-            
-            players.Add(new Player { Name = "Everson", Score = 1});
-            players.Add(new Player { Name = "Maria", Score = 1 });
-            players.Add(new Player { Name = "Pedro", Score = 1 });
-
-            var gameStart = new Game(deck, cardOnTable);
-            
-            var gamesHistory = new List<Game>();
-            gamesHistory.Add(gameStart);
-            var challengeStart = new Challenge(players, gamesHistory,deck);
-
-            _uof.ChallengeRepository.Add(challengeStart);
-            _uof.DeckRepository.Add(deck);
-            _uof.GameRepository.Add(gameStart);
-            _uof.Commit();
-            //var challenge = new Challenge(players, game);
-
-            var tableDTO = new TableDTO()
+            try
             {
-                ChallengeId = challengeStart.Id,  
-                CardOntable=_iDeckServices.ChooseCard(deck.Id),
-                PlayerTurn = "Everson",
-                Players= players,
+                var deck = _iDeckServices.CreateDeck();
+                var cardOnTable = _iDeckServices.ChooseCard(deck);
+
+                var players = new List<Player>();
+
+                players.Add(new Player { Name = "Everson", Score = 1 });
+                players.Add(new Player { Name = "Maria", Score = 1 });
+                players.Add(new Player { Name = "Pedro", Score = 1 });
+
+                var gameStart = new Game(deck, cardOnTable);
+
+                var gamesHistory = new List<Game>();
+                gamesHistory.Add(gameStart);
+                var challengeStart = new Challenge(players, gamesHistory, deck);
+
+                _uof.ChallengeRepository.Add(challengeStart);
+                _uof.DeckRepository.Add(deck);
+                _uof.GameRepository.Add(gameStart);
+                _uof.Commit();
+                //var challenge = new Challenge(players, game);
+
+                var tableDTO = new TableDTO()
+                {
+                    ChallengeId = challengeStart.Id,
+                    CardOntable = _iDeckServices.ChooseCard(deck.Id),
+                    PlayerTurn = "Everson",
+                    Players = players,
+                };
+                return tableDTO;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "I'm sorry. Server Error. Contact us to support");
             };
-            return tableDTO;
+
         }
 
 
         [HttpGet("{id}")]
         public ActionResult<Challenge> Table(int id)
         {
-            var lastTurn = _uof.ChallengeRepository.GetChallengeAsync(id).Result;
-            //var lastTurne = new Game(challenge.Deck)
-            //{
-            //    CardOnTable =
-            //};
-            //var tableDTO = new TableDTO()
-            //{
-            //    ChallengeId = challengeStart.Id,
-            //    CardOntable = _iDeckServices.ChooseCard(deck.Id),
-            //    PlayerTurn = "Everson",
-            //    Players = players,
-            //};
+            var lastTurn = _uof.ChallengeRepository.GetChallenge(id);
+            
             return lastTurn;
         }
 
