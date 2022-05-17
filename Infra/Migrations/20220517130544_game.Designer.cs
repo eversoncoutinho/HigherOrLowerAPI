@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(HigherOrLowerDbContext))]
-    [Migration("20220516114242_init")]
-    partial class init
+    [Migration("20220517130544_game")]
+    partial class game
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,23 @@ namespace Infra.Migrations
                     b.ToTable("Cards");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Challenge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DeckId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeckId");
+
+                    b.ToTable("Challenges");
+                });
+
             modelBuilder.Entity("Domain.Entities.Deck", b =>
                 {
                     b.Property<int>("Id")
@@ -54,6 +71,62 @@ namespace Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Decks");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Game", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CardOnTableId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ChallengeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DeckId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Guess")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Result")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardOnTableId");
+
+                    b.HasIndex("ChallengeId");
+
+                    b.HasIndex("DeckId");
+
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Player", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ChallengeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChallengeId");
+
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -273,6 +346,41 @@ namespace Infra.Migrations
                         .HasForeignKey("DeckId");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Challenge", b =>
+                {
+                    b.HasOne("Domain.Entities.Deck", "Deck")
+                        .WithMany()
+                        .HasForeignKey("DeckId");
+
+                    b.Navigation("Deck");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Game", b =>
+                {
+                    b.HasOne("Domain.Domain.Card", "CardOnTable")
+                        .WithMany()
+                        .HasForeignKey("CardOnTableId");
+
+                    b.HasOne("Domain.Entities.Challenge", null)
+                        .WithMany("Games")
+                        .HasForeignKey("ChallengeId");
+
+                    b.HasOne("Domain.Entities.Deck", "Deck")
+                        .WithMany()
+                        .HasForeignKey("DeckId");
+
+                    b.Navigation("CardOnTable");
+
+                    b.Navigation("Deck");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Player", b =>
+                {
+                    b.HasOne("Domain.Entities.Challenge", null)
+                        .WithMany("Players")
+                        .HasForeignKey("ChallengeId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -322,6 +430,13 @@ namespace Infra.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Challenge", b =>
+                {
+                    b.Navigation("Games");
+
+                    b.Navigation("Players");
                 });
 
             modelBuilder.Entity("Domain.Entities.Deck", b =>

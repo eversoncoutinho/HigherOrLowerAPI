@@ -42,6 +42,7 @@ namespace HigherOrLowerAPI.Controllers
             var challengeStart = new Challenge(players, gamesHistory,deck);
 
             _uof.ChallengeRepository.Add(challengeStart);
+            _uof.DeckRepository.Add(deck);
             _uof.GameRepository.Add(gameStart);
             _uof.Commit();
             //var challenge = new Challenge(players, game);
