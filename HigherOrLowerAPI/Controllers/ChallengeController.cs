@@ -4,7 +4,6 @@ using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 
 namespace HigherOrLowerAPI.Controllers
@@ -23,7 +22,8 @@ namespace HigherOrLowerAPI.Controllers
         }
 
         [HttpGet("Start")]
-        public TableDTO StartChallenge(string NumberPlayer)
+       
+        public ActionResult<TableDTO> StartChallenge(string NumberPlayer)
         {
             
             var deck = _iDeckServices.CreateDeck();
@@ -55,16 +55,37 @@ namespace HigherOrLowerAPI.Controllers
             };
             return tableDTO;
         }
-        
-       //[HttpPost("YourTurn")]
-       //[ValidateAntiForgeryToken]
-       // public IActionResult Post([FromBody] ChooseDTO chooseDto)
-       // {
-            
-       //     var challege = _uof.ChallengeRepository.GetChallengeAsync(chooseDto.ChallengeId);
-       //     var ChooseCard = _iDeckServices.ChooseCard(challege.Result.Deck);
-       //     //var cardOnTable = 
 
-       // }
+
+        [HttpGet("{id}")]
+        public ActionResult<Challenge> Table(int id)
+        {
+            var lastTurn = _uof.ChallengeRepository.GetChallengeAsync(id).Result;
+            //var lastTurne = new Game(challenge.Deck)
+            //{
+            //    CardOnTable =
+            //};
+            //var tableDTO = new TableDTO()
+            //{
+            //    ChallengeId = challengeStart.Id,
+            //    CardOntable = _iDeckServices.ChooseCard(deck.Id),
+            //    PlayerTurn = "Everson",
+            //    Players = players,
+            //};
+            return lastTurn;
+        }
+
+
+
+        //[HttpGet("{id}")]
+        
+        //public IActionResult Post([FromBody] ChooseDTO chooseDto)
+        // {
+
+        //     var challege = _uof.ChallengeRepository.GetChallengeAsync(chooseDto.ChallengeId);
+        //     var ChooseCard = _iDeckServices.ChooseCard(challege.Result.Deck);
+        //     //var cardOnTable = 
+
+        // }
     } 
 }
