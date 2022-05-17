@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Domain;
 using Domain.Entities;
+using Domain.Enum;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,16 +22,11 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public int AddPoint(int platerId, bool resultCompair)
+        public int AddPoint(Player player, bool resultCompair)
         {
-            //var player = new Player();
-            
-            //if (resultCompair)
-            //{
-
-            //}
-
-            throw new NotImplementedException();
+            if(resultCompair)
+                return player.Score++;
+            return player.Score+=0;
         }
 
         public string CompairCards(Card cardOnTable, Card cardOnDeck)
@@ -45,7 +41,7 @@ namespace Application.Services
             return result;
         }
 
-        public bool CompairChoose(string compairCards, string playerChoose)
+        public bool CompairChoose(string compairCards, Guess playerChoose)
         {
             return compairCards.Equals(playerChoose);
         }

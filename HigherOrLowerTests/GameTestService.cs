@@ -77,7 +77,7 @@ namespace HigherOrLowerTests
             var cardInDeck = serviceDeck.ChooseCard(deckId);
             var compairCards = service.CompairCards(cardOntable,cardInDeck);
 
-            var playerChoose = "menor";
+            var playerChoose =(Guess)0;
 
             //Act
             var data = service.CompairChoose(compairCards, playerChoose);
