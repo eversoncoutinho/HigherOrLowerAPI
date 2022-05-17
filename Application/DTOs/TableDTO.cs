@@ -10,7 +10,7 @@ namespace Application.DTOs
 {
     public class TableDTO
     {
-        public int Challenge { get; set; }
+        public int ChallengeId { get; set; }
         public Card CardOntable { get; set; }
         public string PlayerTurn { get; set; }
         public List<Player> Players { get; set; }

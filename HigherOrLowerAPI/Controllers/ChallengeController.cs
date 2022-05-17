@@ -45,12 +45,13 @@ namespace HigherOrLowerAPI.Controllers
             _uof.GameRepository.Add(gameStart);
             _uof.Commit();
             //var challenge = new Challenge(players, game);
-            
-            var tableDTO = new TableDTO() 
-            { 
-                            CardOntable=_iDeckServices.ChooseCard(deck.Id),
-                            PlayerTurn = "Everson",
-                            Players= players,
+
+            var tableDTO = new TableDTO()
+            {
+                ChallengeId = challengeStart.Id,  
+                CardOntable=_iDeckServices.ChooseCard(deck.Id),
+                PlayerTurn = "Everson",
+                Players= players,
             };
             return tableDTO;
         }
