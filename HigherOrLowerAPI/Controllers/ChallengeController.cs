@@ -55,7 +55,7 @@ namespace HigherOrLowerAPI.Controllers
             return tableDTO;
         }
         
-       //[HttpPost("Jogada")]
+       //[HttpPost("YourTurn")]
        //[ValidateAntiForgeryToken]
        // public IActionResult Post([FromBody] ChooseDTO chooseDto)
        // {
