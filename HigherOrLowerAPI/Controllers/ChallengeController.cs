@@ -31,6 +31,7 @@ namespace HigherOrLowerAPI.Controllers
             {
                 var deck = _iDeckServices.CreateDeck();
                 var cardOnTable = _iDeckServices.ChooseCard(deck);
+                deck = _iDeckServices.RemoveCardDeck(deck,cardOnTable);
 
                 var players = new List<Player>();
 
@@ -58,7 +59,7 @@ namespace HigherOrLowerAPI.Controllers
                     Players = players,
                 };
                 return tableDTO;
-            }
+           }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "I'm sorry. Server Error. Contact us to support");

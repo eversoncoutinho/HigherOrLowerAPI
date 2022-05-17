@@ -23,7 +23,7 @@ namespace Application.Services
         public Deck CreateDeck( ) {
             
             var deck = _uof.DeckRepository.CreateDeck();
-            //_uof.Commit();
+            
             return deck;
         }
 
@@ -51,6 +51,17 @@ namespace Application.Services
             
             _uof.DeckRepository.Update(deckById);
             _uof.Commit();
+
+            return deckById;
+        }
+        public Deck RemoveCardDeck(Deck deck, Card value)
+        {
+
+            var deckById = deck;
+            deckById.Cards.RemoveAll(x => x.Value == value.Value && x.Nipe == value.Nipe);
+
+            //_uof.DeckRepository.Update(deckById);
+            //_uof.Commit();
 
             return deckById;
         }

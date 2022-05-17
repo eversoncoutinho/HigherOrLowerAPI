@@ -26,5 +26,6 @@ namespace Application.Interfaces
         Card ChooseCard(int id);
         Card ChooseCard(Deck deck);
         Task<Deck> DeleteCard(int DeckId, Card value);
+        Deck RemoveCardDeck(Deck deck, Card value);
     }
 }
