@@ -2,7 +2,7 @@
 {
     public enum Guess
     {
-        Menor = 0,
-        Maior = 1
+        Lower = 0,
+        Higher = 1
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Application.Mappings;
 using Application.Services;
 using AutoMapper;
-using Domain.Domain;
 using Domain.Entities;
 using Domain.Enum;
 using Domain.Interfaces;
@@ -75,9 +74,9 @@ namespace HigherOrLowerTests
         var service = new DeckService(repository, mapper);
 
         //Act
-        var data = service.ChooseCard(1);
+        var data = service.ChooseCard(3);
 
-
+            var show = data.Value;
         //Assert
          Assert.IsType<Card>(data);
             Assert.IsNotType<int>(data.Value);

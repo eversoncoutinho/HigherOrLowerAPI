@@ -1,5 +1,4 @@
-﻿using Domain.Domain;
-using Domain.Enum;
+﻿using Domain.Enum;
 using Domain.ValueObjects;
 using System.Collections.Generic;
 
@@ -7,8 +6,7 @@ namespace Domain.Entities
 {
     public class Deck:Entity
     {
-        public Deck( ) {
-            
+        public Deck( ) {            
         }
         public Deck(List<Card> cards)
         {

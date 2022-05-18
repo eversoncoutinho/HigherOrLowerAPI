@@ -1,5 +1,4 @@
-﻿using Domain.Domain;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -25,16 +24,19 @@ namespace Infra.Data
             //Challeges
             var challeges = builder.Entity<Challenge>();
             challeges.HasOne(d => d.Deck);
-            challeges.HasMany(g => g.Games);
-            challeges.HasMany(g => g.Players);
+            challeges.HasMany(p => p.Players);
 
             //Games
             var game = builder.Entity<Game>();
             game.HasOne(d => d.Deck);
+            game.HasOne(c=>c.Challenge).WithMany(g=>g.Games).OnDelete(DeleteBehavior.Cascade);
             
             //Decks
             var deck = builder.Entity<Deck>();
-            deck.HasMany(c => c.Cards);
+            deck.HasMany(c => c.Cards);            
+                
+           
+            
 
             //Identity propety to avoid bugs
             builder.Entity<IdentityUser>(entity => entity.Property(m => m.Id).HasMaxLength(85));

@@ -1,6 +1,4 @@
-﻿using Domain.Domain;
-using Domain.Entities;
-using System.Collections.Generic;
+﻿using Domain.Entities;
 using System.Threading.Tasks;
 
 namespace Application.Interfaces
@@ -27,5 +25,6 @@ namespace Application.Interfaces
         Card ChooseCard(Deck deck);
         Task<Deck> DeleteCard(int DeckId, Card value);
         Deck RemoveCardDeck(Deck deck, Card value);
+        void RemoveCardDeck(Card value);
     }
 }

@@ -2,7 +2,8 @@
 using Domain.Enum;
 
 
-namespace Domain.Domain
+namespace Domain.Entities
+
 {
     public class Card:Entity
     {

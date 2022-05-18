@@ -1,12 +1,13 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
 using Domain.Entities;
+using Domain.Enum;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace HigherOrLowerAPI.Controllers
 {
@@ -32,7 +33,6 @@ namespace HigherOrLowerAPI.Controllers
             {
                 var deck = _iDeckServices.CreateDeck();
                 var cardOnTable = _iDeckServices.ChooseCard(deck);
-                //deck = _iDeckServices.RemoveCardDeck(deck,cardOnTable);
 
                 var players = new List<Player>();
 
@@ -70,44 +70,74 @@ namespace HigherOrLowerAPI.Controllers
         }
         [HttpPost("YourTurn")]
         
-        public ActionResult<Challenge> yourTurn([FromBody] ChooseDTO chooseDTO)
+        public IActionResult<TableResultDTO> yourTurn([FromBody] ChooseDTO chooseDTO)
         {
             //Open the current Challege
-            var lastTurn = _uof.ChallengeRepository.GetChallenge(chooseDTO.ChallengeId);
             
+            var lastTurn = _uof.ChallengeRepository.GetChallenge(chooseDTO.ChallengeId);
+            var index = lastTurn.Games.Count - 1;
+            var sd = lastTurn.Games.ElementAtOrDefault(index);
+            
+
+            var deck = lastTurn.Deck;
             //Receber escolha do jogador (maior ou menor)
 
             var playerChoose = chooseDTO.Guess;
 
             //Deck
             //Escolher carta do deck
-            var GetcardOnDeck = _iDeckServices.ChooseCard(lastTurn.Deck);
-            var newDeck = _iDeckServices.RemoveCardDeck(lastTurn.Deck,GetcardOnDeck);
-            _uof.DeckRepository.Update(newDeck);
+            var GetcardOnDeck = _iDeckServices.ChooseCard(deck);
+            if (GetcardOnDeck.Value==null)
+            {
+                return NotFound($"Fim do jogo");
+            }
+            //var newDeck = _iDeckServices.RemoveCardDeck(deck,GetcardOnDeck);
+            //_uof.DeckRepository.Update(newDeck);           
 
-            var cardOnTable = lastTurn.Games[lastTurn.Games.Count-1].CardOnTable;
-
-            var compairCard = _gameServices.CompairCards(cardOnTable, GetcardOnDeck);
-            var result = _gameServices.CompairChoose(compairCard, playerChoose);
+            var cardOnTable = lastTurn.Games[index].CardOnTable;
+            if (cardOnTable == null)
+                cardOnTable = _iDeckServices.ChooseCard(deck);
             //Comparar com a carta da mesa
+            var compairCard = _gameServices.CompairCards(cardOnTable, GetcardOnDeck);
+
             //analisar se está certo ou errado
+            var result = _gameServices.CompairChoose((Guess)compairCard, chooseDTO.Guess);
+
+
             //se acerto acrescentar 1 ao escore do jogador  
-            //retirar a carta escolhida
-            //update deck
+            //jogar fora a carta que estava na mesa
+           _iDeckServices.RemoveCardDeck(cardOnTable);
+
+            
             var game = new Game()
             {
                 CardOnTable = GetcardOnDeck,
-                Deck = newDeck,
+                Deck = deck,
                 Guess = playerChoose,
-                Result = false,
+                Result = result,
 
             };
            lastTurn.Games.Add(game);
-           //var newTurn = new Challenge(chooseDTO.Player, lastTurn, newDeck);
+            //var newTurn = new Challenge(chooseDTO.Player, lastTurn, newDeck);
             //_uof.ChallengeRepository.Update(newTurn);
-            //_uof.Commit();
+            _uof.CommitAsync();
 
-            return lastTurn;
+            var tableDTO = new TableResultDTO()
+            {
+                ChallengeId = lastTurn.Id,
+                CardOntable = cardOnTable,
+                CardOnDeck = GetcardOnDeck,
+                PlayerTurn = "Everson",
+                Players = lastTurn.Players,
+                Result = result,
+                
+            };
+
+            _iDeckServices.RemoveCardDeck(cardOnTable);
+            //update deck
+            _uof.DeckRepository.Update(deck);
+
+            return tableDTO;
         }
 
         [HttpGet("{id}")]

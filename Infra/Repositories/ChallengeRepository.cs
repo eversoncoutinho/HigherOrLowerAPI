@@ -28,10 +28,16 @@ namespace Infra.Repositories
         {
             var result = _context.Challenges
                 .Include(d => d.Deck.Cards)
-                .Include(g => g.Games)
                 .Include(p => p.Players)
-                .SingleOrDefault(n => n.Id == id)
-                ;
+                .Include(g => g.Games)
+
+                .FirstOrDefault(n => n.Id == id);
+                
+                //.SingleOrDefault(n => n.Id == id)
+                
+            
+
+                
             return result;
             //return _context.Challenges.Include(d => d.Deck)
             //   .Include(g => g.Games)
