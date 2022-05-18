@@ -90,6 +90,9 @@ namespace Infra.Migrations
                     b.Property<int>("Guess")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Result")
                         .HasColumnType("bit");
 
@@ -100,6 +103,8 @@ namespace Infra.Migrations
                     b.HasIndex("ChallengeId");
 
                     b.HasIndex("DeckId");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Games");
                 });
@@ -368,11 +373,17 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("DeckId");
 
+                    b.HasOne("Domain.Entities.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId");
+
                     b.Navigation("CardOnTable");
 
                     b.Navigation("Challenge");
 
                     b.Navigation("Deck");
+
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("Domain.Entities.Player", b =>

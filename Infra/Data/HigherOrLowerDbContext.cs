@@ -30,7 +30,7 @@ namespace Infra.Data
             var game = builder.Entity<Game>();
             game.HasOne(d => d.Deck);
             game.HasOne(c=>c.Challenge).WithMany(g=>g.Games).OnDelete(DeleteBehavior.Cascade);
-            
+            game.HasOne(c => c.Player);
             //Decks
             var deck = builder.Entity<Deck>();
             deck.HasMany(c => c.Cards);            

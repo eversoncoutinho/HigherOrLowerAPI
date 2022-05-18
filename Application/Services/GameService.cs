@@ -18,6 +18,7 @@ namespace Application.Services
 
         public int AddPoint(Player player, bool resultCompair)
         {
+
             if(resultCompair)
                 return player.Score++;
             return player.Score+=0;
@@ -42,6 +43,11 @@ namespace Application.Services
             if(compairCards==(Guess)2)
                 return true;
             return compairCards.Equals(playerChoose);
+        }
+
+        public Player PlayerTurn(Player player)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

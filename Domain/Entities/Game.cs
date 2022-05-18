@@ -9,17 +9,18 @@ namespace Domain.Entities
         {
             
         }
-        public Game(Deck deck, Card cardOnTable, Guess guesses = 0, int score = 0)
+        public Game(Deck deck, Card cardOnTable, Player player, Guess guesses = 0,  int score = 0 )
         {
             Deck = deck;
             Guess = guesses;
             CardOnTable = cardOnTable;
-            
+            Player = player;
         }
         public Card CardOnTable { get; set; }
         public Guess Guess { get; set; }
         public Deck Deck { get; set; }
         public bool Result { get; set; }
+        public Player Player { get; set; }
         public Challenge Challenge { get; set; }
         
         //pegar o deck

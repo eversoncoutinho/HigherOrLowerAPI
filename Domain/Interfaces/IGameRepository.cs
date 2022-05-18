@@ -9,5 +9,6 @@ namespace Domain.Interfaces
 {
     public interface IGameRepository: IRepository<Game>
     {
+        Player GetLastPlayer(Challenge challenge);
     }
 }

@@ -11,8 +11,29 @@ namespace Infra.Repositories
 {
     public class GameRepository : Repository<Game>, IGameRepository
     {
+        private readonly HigherOrLowerDbContext _context;
         public GameRepository(HigherOrLowerDbContext context) : base(context)
         {
+            _context = context;
         }
+
+        public Player GetLastPlayer(Challenge challenge)
+        {
+            var c = challenge.Games.Count()-1;
+            var LastGame = challenge.Games.ToList() [c];
+            var player = LastGame.Player.Name;
+            var score = LastGame.Player.Score;
+
+//            var p = challenge.Games.
+
+            var play = new Player(player, score) { Id=LastGame.Player.Id};
+            return play;
+        }
+
+        //public Player GetLastPlayer(int challengeId)
+        //{
+        //    var player = _context.Games.Where();
+        //    retun player;
+        //}
     }
 }

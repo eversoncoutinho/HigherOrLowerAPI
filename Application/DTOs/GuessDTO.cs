@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs
 {
-    public class ChooseDTO
+    public class GuessDTO
     {
-        public ChooseDTO(){}
+        public GuessDTO(){}
 
-        public ChooseDTO(Guess guess, int challengeId, Player player = null)
+        public GuessDTO(Guess guess, int challengeId, string playerTurn)
         {
             Guess = guess;
             ChallengeId = challengeId;
-            Player = player;
+            PlayerTurn = playerTurn;
         }
         public Guess Guess { get; set; }
-        public Player Player { get; set; }
+        public string PlayerTurn { get; set; }
         public int ChallengeId { get; set; }
     }
 }

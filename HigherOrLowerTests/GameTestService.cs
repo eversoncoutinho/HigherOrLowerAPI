@@ -86,6 +86,23 @@ namespace HigherOrLowerTests
             Assert.True(data);
 
         }
+        [Fact]
+        public void AddPointService_Return_OkResult( )
+        {
+            //Arrange
+            var service = new GameService(repository, mapper);
+            var player = repository.PlayerRepository.GetById(n=>n.Id==23);
+
+
+            //Act
+            var data = service.AddPoint(player, true);
+            repository.Commit();
+            //Assert
+            Assert.IsType<int>(data);
+            Assert.Equal(5, player.Score);
+
+        }
+
 
     }
 
