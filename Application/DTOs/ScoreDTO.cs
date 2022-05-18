@@ -13,13 +13,19 @@ namespace Application.DTOs
         
         public ScoreDTO(){}
 
-        public ScoreDTO(int score, Player player)
+
+        public ScoreDTO(List<Player> players)
         {
-            Score = score;
-            Player = player;
+            Players = players;
         }
-        public int Score { get; set; }
-        public Player Player { get; set; }
+        public ScoreDTO(List<Player> players, int gameNumber)
+        {
+
+            Players = players;
+            GameNumber = gameNumber;
+        }
+        public int GameNumber { get; set; } 
+        public List<Player> Players { get; set; }
         
     }
 }

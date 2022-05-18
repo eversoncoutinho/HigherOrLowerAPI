@@ -49,7 +49,7 @@ namespace HigherOrLowerTests
             {
                 Id = 17
             };
-            var service = new ChallengeService(repository, mapper);
+            var service = new ChallengeServices(repository, mapper);
             repository.CardRepository.Delete(card);
             repository.Commit();
             //Act

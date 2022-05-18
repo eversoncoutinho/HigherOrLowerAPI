@@ -6,11 +6,11 @@ using Domain.Interfaces;
 
 namespace Application.Services
 {
-    public class GameService : IGameServices
+    public class GameServices : IGameServices
     {
         public readonly IUnitOfWork _uof;
         public readonly IMapper _mapper;
-        public GameService(IUnitOfWork uof, IMapper mapper)
+        public GameServices(IUnitOfWork uof, IMapper mapper)
         {
             _uof = uof;
             _mapper = mapper;

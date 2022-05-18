@@ -38,8 +38,9 @@ namespace HigherOrLowerAPI
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             //services
-            services.AddScoped<IDeckService, DeckService>();
-            services.AddScoped<IGameServices, GameService>();
+            services.AddScoped<IDeckServices, DeckServices>();
+            services.AddScoped<IGameServices, GameServices>();
+            services.AddScoped<IChallengeServices, ChallengeServices>();
 
 
             var mySqlStringConection = MyConectionString.connectionString;

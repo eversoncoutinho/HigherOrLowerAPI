@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IDeckService
+    public interface IDeckServices
     {
         /// <summary>
         /// Get The Card List in database

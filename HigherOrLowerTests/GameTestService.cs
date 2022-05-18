@@ -45,8 +45,8 @@ namespace HigherOrLowerTests
 
             //Arrange            
             var deckId = 1;
-            var service = new GameService(repository, mapper);
-            var serviceDeck = new DeckService(repository, mapper);
+            var service = new GameServices(repository, mapper);
+            var serviceDeck = new DeckServices(repository, mapper);
             
             
            // var deck = repository.DeckRepository.GetDeckAsync(deckId);//get deck
@@ -69,8 +69,8 @@ namespace HigherOrLowerTests
         {
             //Arrange
             var deckId = 1;
-            var service = new GameService(repository, mapper);
-            var serviceDeck = new DeckService(repository, mapper);
+            var service = new GameServices(repository, mapper);
+            var serviceDeck = new DeckServices(repository, mapper);
 
             var cardOntable = new Card() { Value = "11", Nipe = 0 };
             var cardInDeck = serviceDeck.ChooseCard(deckId);
@@ -90,7 +90,7 @@ namespace HigherOrLowerTests
         public void AddPointService_Return_OkResult( )
         {
             //Arrange
-            var service = new GameService(repository, mapper);
+            var service = new GameServices(repository, mapper);
             var player = repository.PlayerRepository.GetById(n=>n.Id==23);
 
 

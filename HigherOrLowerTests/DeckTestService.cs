@@ -44,7 +44,7 @@ namespace HigherOrLowerTests
         {
 
             //Arrange            
-            var service = new DeckService(repository, mapper);
+            var service = new DeckServices(repository, mapper);
 
             //Act
             var data = service.GetDeckAsync(2).Result;
@@ -58,7 +58,7 @@ namespace HigherOrLowerTests
         public void CreateDeckService_Return_OkResult( )
         {
             //Arrange            
-            var service = new DeckService(repository, mapper);
+            var service = new DeckServices(repository, mapper);
 
             //Act
             var data = service.CreateDeck();
@@ -71,7 +71,7 @@ namespace HigherOrLowerTests
         public void ChooseCardFromDeck_Return_OkResult( )
         {
         //Arrange            
-        var service = new DeckService(repository, mapper);
+        var service = new DeckServices(repository, mapper);
 
         //Act
         var data = service.ChooseCard(3);
@@ -85,7 +85,7 @@ namespace HigherOrLowerTests
         public void DeleteCardFromDeck_Return_OkResult( )
         {
             //Arrange
-            var service = new DeckService(repository, mapper);
+            var service = new DeckServices(repository, mapper);
             var deck=new Deck();
             var card = new Card("2",(Nipe)1);
             var deckId = 3;

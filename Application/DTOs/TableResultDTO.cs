@@ -10,6 +10,8 @@ namespace Application.DTOs
         public Card CardOnDeck { get; set; }
         public bool Result { get; set; }
         public string PlayerTurn { get; set; }
+        public string NextPlayer { get; set; }
+
         public List<Player> Players { get; set; }
     }
 }

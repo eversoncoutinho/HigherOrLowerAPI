@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class DeckService : IDeckService
+    public class DeckServices : IDeckServices
     {
         public readonly IUnitOfWork _uof;
         public readonly IMapper _mapper;
-        public DeckService(IUnitOfWork uof, IMapper mapper)
+        public DeckServices(IUnitOfWork uof, IMapper mapper)
         {
             _uof = uof;
             _mapper = mapper;
