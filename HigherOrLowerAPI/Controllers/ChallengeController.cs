@@ -95,7 +95,7 @@ namespace HigherOrLowerAPI.Controllers
             //Verify the Player Turn
             if(turnPlayer.Name!=guessDTO.PlayerTurn)
             {
-                return Ok("Não é a sua vez");
+                return Ok("It´s not you turn");
             }
 
             //Index to verify if is the last of Player
@@ -125,7 +125,9 @@ namespace HigherOrLowerAPI.Controllers
             if (GetcardOnDeck.Value==null || lastDeck.Cards.Count==0)
             {
                 var winner = _challengeServices.Winner(guessDTO.ChallengeId);
-
+                lastTurn.Winner = winner.Winners[0];
+                _uof.ChallengeRepository.Update(lastTurn);
+                _uof.Commit();
                 return Ok(winner);
             }
 
@@ -188,12 +190,25 @@ namespace HigherOrLowerAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Challenge> Game(int id)
+        public ActionResult<ChallengeDTO> Game(int id)
         {
 
-            var lastTurn = _uof.ChallengeRepository.GetChallenge(id);
+            var challenge = _uof.ChallengeRepository.GetChallenge(id);
+            var games = challenge.Games.Count;
+            var players = challenge.Players;
+            var state = (challenge.Games.Count == 52) ? "Finished" : "Open";
+
+            //            var winner = challenge.Winner.Name?? "Not have winner yet";
+            var winner = "Not have winner yet";
+            if (challenge.Winner.Name != null)
+            {
+                winner = challenge.Winner.Name;
+            };
+
+            var challengeDTO = new ChallengeDTO(state, games, players, winner);
             
-            return lastTurn;
+            
+            return challengeDTO;
         }
 
 

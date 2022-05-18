@@ -25,6 +25,7 @@ namespace Infra.Data
             var challeges = builder.Entity<Challenge>();
             challeges.HasOne(d => d.Deck);
             challeges.HasMany(p => p.Players);
+            challeges.HasOne(w => w.Winner);
 
             //Games
             var game = builder.Entity<Game>();

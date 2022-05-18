@@ -12,9 +12,11 @@ namespace Domain.Entities
             Players = players;
             Games = games;
             Deck = deck;
+
         }
         public Deck Deck { get; set; }
         public List<Player> Players { get; set; }
         public List<Game> Games { get; set; }
+        public Player Winner { get; set; }
     }
 }
