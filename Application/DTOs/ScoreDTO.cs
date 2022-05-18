@@ -18,12 +18,14 @@ namespace Application.DTOs
         {
             Players = players;
         }
-        public ScoreDTO(List<Player> players, int gameNumber)
+        public ScoreDTO(List<Player> players, int gameNumber, string nextPlayer)
         {
 
             Players = players;
             GameNumber = gameNumber;
+            NextPlayer = nextPlayer;
         }
+        public string NextPlayer { get; set; }
         public int GameNumber { get; set; } 
         public List<Player> Players { get; set; }
         

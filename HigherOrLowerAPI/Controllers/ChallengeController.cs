@@ -48,7 +48,7 @@ namespace HigherOrLowerAPI.Controllers
 
                 var playerTurn = players [0];
 
-                var gameStart = new Game(deck, cardOnTable, playerTurn);
+                var gameStart = new Game(deck, cardOnTable, playerTurn,playerTurn);
 
                 var gamesHistory = new List<Game>();
                 gamesHistory.Add(gameStart);
@@ -77,23 +77,27 @@ namespace HigherOrLowerAPI.Controllers
         }
         [HttpPost("YourTurn")]
         public IActionResult yourTurn([FromBody] GuessDTO guessDTO)
-
-
-//        public ActionResult<TableResultDTO> yourTurn([FromBody] GuessDTO guessDTO)
         {
+            
             //Open the current Challege
             
             var lastTurn = _uof.ChallengeRepository.GetChallenge(guessDTO.ChallengeId);
-
+            
             var indexLastGame = lastTurn.Games.Count - 1;
-
+            //Get Card On TAble
+            var cardOnTable = lastTurn.Games [indexLastGame].CardOnTable;
             //Player
             var playerList = _uof.PlayerRepository.GetPlayerChallenge(guessDTO.ChallengeId);
             
             var lastPlayer = _uof.GameRepository.GetLastPlayer(lastTurn);
             var turnPlayer = playerList.FirstOrDefault(n=>n.Name==guessDTO.PlayerTurn);
-            
- 
+
+            //Verify the Player Turn
+            if(turnPlayer.Name!=guessDTO.PlayerTurn)
+            {
+                return Ok("Não é a sua vez");
+            }
+
             //Index to verify if is the last of Player
             var lastPlayerIndex = playerList.IndexOf(lastPlayer);
             var turnPlayerIndex = playerList.IndexOf(turnPlayer);
@@ -117,13 +121,14 @@ namespace HigherOrLowerAPI.Controllers
             //Deck
             //Escolher carta do deck
             var GetcardOnDeck = _deckServices.ChooseCard(lastDeck);
-            if (GetcardOnDeck.Value==null)
+
+            if (GetcardOnDeck.Value==null || lastDeck.Cards.Count==0)
             {
-                return NotFound($"Fim do jogo");
+                var winner = _challengeServices.Winner(guessDTO.ChallengeId);
+
+                return Ok(winner);
             }
 
-            //Get Card On TAble
-            var cardOnTable = lastTurn.Games[indexLastGame].CardOnTable;
             if (cardOnTable == null)
                 cardOnTable = _deckServices.ChooseCard(lastDeck);
             
@@ -146,7 +151,8 @@ namespace HigherOrLowerAPI.Controllers
                 Deck = lastDeck,
                 Guess = playerChoose,
                 Result = result,
-                Player= turnPlayer
+                TurnPlayer= turnPlayer,
+                NextPlayer= nextPlayer,
             };
            lastTurn.Games.Add(game);
             
@@ -157,9 +163,9 @@ namespace HigherOrLowerAPI.Controllers
                 CardOntable = cardOnTable,
                 CardOnDeck = GetcardOnDeck,
                 PlayerTurn = turnPlayer.Name,
-                NextPlayer=nextPlayer.Name,
-                Players = lastTurn.Players,
                 Result = result,
+                NextPlayer =nextPlayer.Name,
+             
                 
             };
 
@@ -170,12 +176,11 @@ namespace HigherOrLowerAPI.Controllers
             //Commit All
             _uof.CommitAsync();
 
-            
+            var newChallenge = new Challenge(playerList, lastTurn.Games, lastDeck);
             if (turnPlayerIndex==playerList.Count-1)
             {
 
-                var score = _challengeServices.Score(tableDTO.Players);
-               
+                var score = _challengeServices.Score(playerList, newChallenge, nextPlayer.Name);
                 return Ok(score);
             }
 

@@ -21,12 +21,12 @@ namespace Infra.Repositories
         {
             var c = challenge.Games.Count()-1;
             var LastGame = challenge.Games.ToList() [c];
-            var player = LastGame.Player.Name;
-            var score = LastGame.Player.Score;
+            var player = LastGame.TurnPlayer.Name;
+            var score = LastGame.TurnPlayer.Score;
 
 //            var p = challenge.Games.
 
-            var play = new Player(player, score) { Id=LastGame.Player.Id};
+            var play = new Player(player, score) { Id=LastGame.TurnPlayer.Id};
             return play;
         }
 

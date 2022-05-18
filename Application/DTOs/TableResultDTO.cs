@@ -12,6 +12,5 @@ namespace Application.DTOs
         public string PlayerTurn { get; set; }
         public string NextPlayer { get; set; }
 
-        public List<Player> Players { get; set; }
     }
 }

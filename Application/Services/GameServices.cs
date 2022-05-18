@@ -26,8 +26,9 @@ namespace Application.Services
 
         public int CompairCards(Card cardOnTable, Card cardOnDeck)
         {   //1-maior, 0-menor, 2-igual
-            var cardTableValue = int.Parse(cardOnTable.Value);
             var cardDeckValue = int.Parse(cardOnDeck.Value);
+            var cardTableValue = int.Parse(cardOnTable.Value);
+            
             var result = 1;
             if (cardDeckValue > cardTableValue)
                 result = 1;

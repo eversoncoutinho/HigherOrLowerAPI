@@ -12,10 +12,11 @@ namespace Domain.Entities
 
         public Player(string name, int score=0)
         {
-            Score = score;
             Name = name;
+            Score = score;
         }
-        public int Score { get; set; }
         public string Name { get; set; }
+        public int Score { get; set; }
+
     }
 }

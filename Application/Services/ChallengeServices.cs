@@ -28,10 +28,23 @@ namespace Application.Services
              return result;
         }
 
-        public ScoreDTO Score(List<Player> players)
+        public ScoreDTO Score(List<Player> players, Challenge challenge, string nextPlayer)
         {
+            var playerListNumber = challenge.Players.Count;
+            var gamesListNumber = challenge.Games.Count; 
+
+            int gamerNumber = gamesListNumber/playerListNumber;
             
-            return new ScoreDTO(players);
+            return new ScoreDTO(players,gamerNumber,nextPlayer);
+        }
+
+        public WinnerDTO Winner(int challengeId)
+        {
+            var players = _uof.PlayerRepository.GetPlayerChallenge(challengeId).ToList();
+            var winners = players.Max(n=>n.Score);
+            var player = players.FindAll(n => n.Score == winners);
+            var winnersDTO = new WinnerDTO(challengeId, player);
+            return winnersDTO;
         }
     }
 }

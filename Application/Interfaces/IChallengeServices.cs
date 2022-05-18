@@ -11,6 +11,7 @@ namespace Application.Interfaces
     public interface IChallengeServices
     {
         Challenge GetChallenge(int challengeId);
-        ScoreDTO Score(List<Player> players);
+        ScoreDTO Score(List<Player> players, Challenge challenge, string nextPlayer);
+        WinnerDTO Winner(int challengeId);
     }
 }
