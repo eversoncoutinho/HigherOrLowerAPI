@@ -17,6 +17,7 @@ namespace Infra.Repositories
         private DeckRepository _deckRepository;
         private GameRepository _gameRepository;
         private ChallengeRepository _challengeRepository;
+        private CardRepository _cardRepository;
 
         public IDeckRepository DeckRepository
         {
@@ -41,6 +42,13 @@ namespace Infra.Repositories
             }
         }
 
+        public ICardRepository CardRepository
+        {
+            get
+            {
+                return _cardRepository = _cardRepository ?? new CardRepository(_context);
+            }
+        }
 
         public void Commit() => _context.SaveChanges();
         public async Task CommitAsync() => await _context.SaveChangesAsync();

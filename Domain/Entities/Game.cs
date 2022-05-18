@@ -1,5 +1,4 @@
-﻿using Domain.Domain;
-using Domain.Enum;
+﻿using Domain.Enum;
 using System.Collections.Generic;
 
 namespace Domain.Entities
@@ -14,12 +13,14 @@ namespace Domain.Entities
         {
             Deck = deck;
             Guess = guesses;
-            CardOnTable = cardOnTable;            
+            CardOnTable = cardOnTable;
+            
         }
         public Card CardOnTable { get; set; }
         public Guess Guess { get; set; }
         public Deck Deck { get; set; }
         public bool Result { get; set; }
+        public Challenge Challenge { get; set; }
         
         //pegar o deck
         //apresentar carta

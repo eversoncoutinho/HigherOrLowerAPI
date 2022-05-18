@@ -16,18 +16,33 @@ namespace Infra.Repositories
             _context = context;
         }
 
-        public Task<Challenge> GetChallenge(int id)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public async Task<Challenge> GetChallengeAsync(int id)
         {
             return await _context.Challenges.Include(d=>d.Deck)
                 .Include(g => g.Games)
-                
                 .Include(p=>p.Players)
                 .FirstOrDefaultAsync(n => n.Id == id);
+        }
+        public Challenge GetChallenge(int id)
+        {
+            var result = _context.Challenges
+                .Include(d => d.Deck.Cards)
+                .Include(p => p.Players)
+                .Include(g => g.Games)
+
+                .FirstOrDefault(n => n.Id == id);
+                
+                //.SingleOrDefault(n => n.Id == id)
+                
+            
+
+                
+            return result;
+            //return _context.Challenges.Include(d => d.Deck)
+            //   .Include(g => g.Games)
+            //   .Include(p => p.Players)
+            //   .SingleOrDefault(n => n.Id == id);
         }
     }
 }

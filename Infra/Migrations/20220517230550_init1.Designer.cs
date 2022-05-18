@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(HigherOrLowerDbContext))]
-    [Migration("20220517125213_init")]
-    partial class init
+    [Migration("20220517230550_init1")]
+    partial class init1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace Infra.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Domain.Domain.Card", b =>
+            modelBuilder.Entity("Domain.Entities.Card", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -339,7 +339,7 @@ namespace Infra.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Domain.Domain.Card", b =>
+            modelBuilder.Entity("Domain.Entities.Card", b =>
                 {
                     b.HasOne("Domain.Entities.Deck", null)
                         .WithMany("Cards")
@@ -357,19 +357,22 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entities.Game", b =>
                 {
-                    b.HasOne("Domain.Domain.Card", "CardOnTable")
+                    b.HasOne("Domain.Entities.Card", "CardOnTable")
                         .WithMany()
                         .HasForeignKey("CardOnTableId");
 
-                    b.HasOne("Domain.Entities.Challenge", null)
+                    b.HasOne("Domain.Entities.Challenge", "Challenge")
                         .WithMany("Games")
-                        .HasForeignKey("ChallengeId");
+                        .HasForeignKey("ChallengeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Entities.Deck", "Deck")
                         .WithMany()
                         .HasForeignKey("DeckId");
 
                     b.Navigation("CardOnTable");
+
+                    b.Navigation("Challenge");
 
                     b.Navigation("Deck");
                 });

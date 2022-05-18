@@ -1,14 +1,12 @@
 ﻿using Application.Interfaces;
 using AutoMapper;
-using Domain.Domain;
 using Domain.Entities;
 using Domain.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Application.Services
-{    
+{
     public class DeckService : IDeckService
     {
         public readonly IUnitOfWork _uof;
@@ -23,7 +21,7 @@ namespace Application.Services
         public Deck CreateDeck( ) {
             
             var deck = _uof.DeckRepository.CreateDeck();
-            //_uof.Commit();
+            
             return deck;
         }
 
@@ -31,15 +29,26 @@ namespace Application.Services
         {
             var deckById = _uof.DeckRepository.GetDeckAsync(id).Result;
             var rd = new Random();
-            var remainingCards = rd.Next(0, deckById.Cards.Count);
-            var card = deckById.Cards[remainingCards];
-            return card;            
+            var card = new Card();
+
+            while (true)
+            {
+                var remainingCards = rd.Next(0, deckById.Cards.Count);
+                if (deckById.Cards [remainingCards] == null)
+                    continue;
+                return deckById.Cards [remainingCards];
+
+            }
         }
         public Card ChooseCard(Deck deck)
         {
             var deckById = deck;
             var rd = new Random();
             var remainingCards = rd.Next(0, deckById.Cards.Count);
+            if (remainingCards == 0) 
+            {   
+                return new Card();
+            }
             var card = deckById.Cards [remainingCards];
             return card;
         }
@@ -53,6 +62,19 @@ namespace Application.Services
             _uof.Commit();
 
             return deckById;
+        }
+        public Deck RemoveCardDeck(Deck deck, Card value)
+        {
+
+            var deckById = deck;
+            
+            deckById.Cards.RemoveAll(x => x.Value == value.Value && x.Nipe == value.Nipe);
+        
+            return deckById;
+        }
+        public void RemoveCardDeck(Card value)
+        {
+            _uof.CardRepository.Delete(value);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Infra.Migrations
 {
-    public partial class game : Migration
+    public partial class init16 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

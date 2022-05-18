@@ -9,7 +9,7 @@ namespace Domain.Interfaces
 {
     public interface IChallengeRepository : IRepository<Challenge>
     {
-        Task<Challenge> GetChallenge(int id);
+        Challenge GetChallenge(int id);
         Task<Challenge> GetChallengeAsync(int id);
 
     }

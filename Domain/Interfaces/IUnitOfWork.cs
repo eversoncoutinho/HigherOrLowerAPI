@@ -7,6 +7,7 @@ namespace Domain.Interfaces
         IChallengeRepository ChallengeRepository { get; }
          IDeckRepository DeckRepository { get; }
         IGameRepository GameRepository { get; }
+        ICardRepository CardRepository { get; }
         void Commit();
         Task CommitAsync( );
     }

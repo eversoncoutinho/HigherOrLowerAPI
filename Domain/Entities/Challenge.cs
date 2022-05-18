@@ -5,7 +5,9 @@ namespace Domain.Entities
     public class Challenge:Entity
     {
         public Challenge(){}
-        public Challenge(List<Player> players, List<Game> games, Deck deck)
+        public Challenge(List<Player> players, 
+            List<Game> games, 
+            Deck deck)
         {
             Players = players;
             Games = games;

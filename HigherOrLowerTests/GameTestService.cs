@@ -1,7 +1,6 @@
 ﻿using Application.Mappings;
 using Application.Services;
 using AutoMapper;
-using Domain.Domain;
 using Domain.Entities;
 using Domain.Enum;
 using Domain.Interfaces;
@@ -60,8 +59,8 @@ namespace HigherOrLowerTests
 
             //Assert
             Assert.IsType<string>(data);
-            Assert.NotNull(data);
-            Assert.Equal("menor",data);
+            
+            Assert.Equal(0,data);
 
         }
 
@@ -77,10 +76,10 @@ namespace HigherOrLowerTests
             var cardInDeck = serviceDeck.ChooseCard(deckId);
             var compairCards = service.CompairCards(cardOntable,cardInDeck);
 
-            var playerChoose = "menor";
+            var playerChoose =(Guess)0;
 
             //Act
-            var data = service.CompairChoose(compairCards, playerChoose);
+            var data = service.CompairChoose((Guess)compairCards, playerChoose);
 
             //Assert
             Assert.IsType<bool>(data);
