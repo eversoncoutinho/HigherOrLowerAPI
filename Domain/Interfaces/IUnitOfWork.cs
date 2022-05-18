@@ -8,6 +8,7 @@ namespace Domain.Interfaces
          IDeckRepository DeckRepository { get; }
         IGameRepository GameRepository { get; }
         ICardRepository CardRepository { get; }
+        IPlayerRepository PlayerRepository { get; }
         void Commit();
         Task CommitAsync( );
     }

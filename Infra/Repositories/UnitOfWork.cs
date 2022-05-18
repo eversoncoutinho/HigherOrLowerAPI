@@ -18,6 +18,7 @@ namespace Infra.Repositories
         private GameRepository _gameRepository;
         private ChallengeRepository _challengeRepository;
         private CardRepository _cardRepository;
+        private PlayerRepository _playerRepository;
 
         public IDeckRepository DeckRepository
         {
@@ -31,6 +32,14 @@ namespace Infra.Repositories
             get
             {
                 return _gameRepository = _gameRepository ?? new GameRepository(_context);
+            }
+        }
+
+        public IPlayerRepository PlayerRepository
+        {
+            get
+            {
+                return _playerRepository = _playerRepository ?? new PlayerRepository(_context);
             }
         }
 

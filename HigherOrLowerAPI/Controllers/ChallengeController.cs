@@ -37,11 +37,12 @@ namespace HigherOrLowerAPI.Controllers
                 var players = new List<Player>();
 
                 //TO DO - Create Player
-                players.Add(new Player { Name = "Everson", Score = 1 });
-                players.Add(new Player { Name = "Maria", Score = 1 });
-                
+                players.Add(new Player { Name = "Everson", Score = 0 });
+                players.Add(new Player { Name = "Maria", Score = 0 });
 
-                var gameStart = new Game(deck, cardOnTable);
+                var playerTurn = players [0];
+
+                var gameStart = new Game(deck, cardOnTable, playerTurn);
 
                 var gamesHistory = new List<Game>();
                 gamesHistory.Add(gameStart);
@@ -57,7 +58,7 @@ namespace HigherOrLowerAPI.Controllers
                 {
                     ChallengeId = challengeStart.Id,
                     CardOntable = _iDeckServices.ChooseCard(deck.Id),
-                    PlayerTurn = "Everson",
+                    PlayerTurn = playerTurn.Name,
                     Players = players,
                 };
                 return tableDTO;
@@ -70,19 +71,29 @@ namespace HigherOrLowerAPI.Controllers
         }
         [HttpPost("YourTurn")]
         
-        public IActionResult<TableResultDTO> yourTurn([FromBody] ChooseDTO chooseDTO)
+        public ActionResult<TableResultDTO> yourTurn([FromBody] GuessDTO guessDTO)
         {
             //Open the current Challege
             
-            var lastTurn = _uof.ChallengeRepository.GetChallenge(chooseDTO.ChallengeId);
-            var index = lastTurn.Games.Count - 1;
-            var sd = lastTurn.Games.ElementAtOrDefault(index);
+            var lastTurn = _uof.ChallengeRepository.GetChallenge(guessDTO.ChallengeId);
+
+            var indexLastGAme = lastTurn.Games.Count - 1;
+
+            //Player
+            var playerList = _uof.PlayerRepository.GetPlayerChallenge(guessDTO.ChallengeId);
             
+            var lastPlayer = _uof.GameRepository.GetLastPlayer(lastTurn);
+            var turnPlayer = playerList.FirstOrDefault(n=>n.Name==guessDTO.PlayerTurn);
+
+            var LP = playerList.IndexOf(lastPlayer);
 
             var deck = lastTurn.Deck;
+            
+            
             //Receber escolha do jogador (maior ou menor)
 
-            var playerChoose = chooseDTO.Guess;
+            var playerChoose = guessDTO.Guess;
+            
 
             //Deck
             //Escolher carta do deck
@@ -91,23 +102,23 @@ namespace HigherOrLowerAPI.Controllers
             {
                 return NotFound($"Fim do jogo");
             }
-            //var newDeck = _iDeckServices.RemoveCardDeck(deck,GetcardOnDeck);
-            //_uof.DeckRepository.Update(newDeck);           
 
-            var cardOnTable = lastTurn.Games[index].CardOnTable;
+            //Get Card On TAble
+            var cardOnTable = lastTurn.Games[indexLastGAme].CardOnTable;
             if (cardOnTable == null)
                 cardOnTable = _iDeckServices.ChooseCard(deck);
-            //Comparar com a carta da mesa
+            //Compair Cards
             var compairCard = _gameServices.CompairCards(cardOnTable, GetcardOnDeck);
 
-            //analisar se está certo ou errado
-            var result = _gameServices.CompairChoose((Guess)compairCard, chooseDTO.Guess);
-
+            //guess result - true or false
+            var result = _gameServices.CompairChoose((Guess)compairCard, guessDTO.Guess);
 
             //se acerto acrescentar 1 ao escore do jogador  
             //jogar fora a carta que estava na mesa
            _iDeckServices.RemoveCardDeck(cardOnTable);
 
+            
+           var Score = _gameServices.AddPoint(turnPlayer, result);
             
             var game = new Game()
             {
@@ -115,7 +126,7 @@ namespace HigherOrLowerAPI.Controllers
                 Deck = deck,
                 Guess = playerChoose,
                 Result = result,
-
+                Player= turnPlayer
             };
            lastTurn.Games.Add(game);
             //var newTurn = new Challenge(chooseDTO.Player, lastTurn, newDeck);

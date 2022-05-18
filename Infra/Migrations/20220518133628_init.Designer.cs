@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(HigherOrLowerDbContext))]
-    [Migration("20220517230207_init")]
+    [Migration("20220518133628_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,6 +92,9 @@ namespace Infra.Migrations
                     b.Property<int>("Guess")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Result")
                         .HasColumnType("bit");
 
@@ -102,6 +105,8 @@ namespace Infra.Migrations
                     b.HasIndex("ChallengeId");
 
                     b.HasIndex("DeckId");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Games");
                 });
@@ -363,17 +368,24 @@ namespace Infra.Migrations
 
                     b.HasOne("Domain.Entities.Challenge", "Challenge")
                         .WithMany("Games")
-                        .HasForeignKey("ChallengeId");
+                        .HasForeignKey("ChallengeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Entities.Deck", "Deck")
                         .WithMany()
                         .HasForeignKey("DeckId");
+
+                    b.HasOne("Domain.Entities.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId");
 
                     b.Navigation("CardOnTable");
 
                     b.Navigation("Challenge");
 
                     b.Navigation("Deck");
+
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("Domain.Entities.Player", b =>
