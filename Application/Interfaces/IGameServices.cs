@@ -26,5 +26,6 @@ namespace Application.Interfaces
         /// <returns>Player's score (int)</returns>
         int AddPoint(Player player, bool resultCompair);
         
+        Player PlayerTurn(Player player);
     }
 }

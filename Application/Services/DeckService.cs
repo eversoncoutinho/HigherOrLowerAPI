@@ -47,6 +47,7 @@ namespace Application.Services
             var remainingCards = rd.Next(0, deckById.Cards.Count);
             if (remainingCards == 0) 
             {   
+                //TO DO - Remove Deck
                 return new Card();
             }
             var card = deckById.Cards [remainingCards];

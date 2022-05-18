@@ -39,7 +39,7 @@ namespace HigherOrLowerAPI.Controllers
                 //TO DO - Create Player
                 players.Add(new Player { Name = "Everson", Score = 1 });
                 players.Add(new Player { Name = "Maria", Score = 1 });
-                players.Add(new Player { Name = "Pedro", Score = 1 });
+                
 
                 var gameStart = new Game(deck, cardOnTable);
 
