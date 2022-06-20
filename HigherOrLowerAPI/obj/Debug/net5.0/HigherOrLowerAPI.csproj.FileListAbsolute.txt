@@ -77,3 +77,4 @@ D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\HigherOrLowerAPI\bin\Debug\net5.
 D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\HigherOrLowerAPI\obj\Debug\net5.0\HigherOrLowerAPI.csproj.CopyComplete
 D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\HigherOrLowerAPI\obj\Debug\net5.0\HigherOrLowerAPI.genruntimeconfig.cache
 D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\HigherOrLowerAPI\obj\Debug\net5.0\ref\HigherOrLowerAPI.dll
+D:\Dropbox\_Programacao\dotnet\HigherOrLowerAPI\HigherOrLowerAPI\obj\Debug\net5.0\HigherOrLowerAPI.MvcApplicationPartsAssemblyInfo.cs

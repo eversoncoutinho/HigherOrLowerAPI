@@ -58,7 +58,6 @@ namespace HigherOrLowerAPI.Controllers
                 _uof.DeckRepository.Add(deck);
                 _uof.GameRepository.Add(gameStart);
                 _uof.Commit();
-                //var challenge = new Challenge(players, game);
 
                 var tableDTO = new TableDTO()
                 {
